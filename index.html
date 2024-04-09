@@ -1,36 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Message Scroller</title>
+<title>Inverter Texto</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f4f4f4;
+    }
+    .container {
+        text-align: center;
+    }
+    textarea {
+        width: 300px;
+        height: 100px;
+        margin-bottom: 10px;
+        resize: none;
+    }
+    button {
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    button:hover {
+        background-color: #45a049;
+    }
+</style>
 </head>
 <body>
 
-<input type="text" id="messageInput" placeholder="Type your message here">
-<button onclick="startScroll()">Start</button>
-<button onclick="stopScroll()">Stop</button>
+<div class="container">
+    <textarea id="inputText" placeholder="Digite o texto aqui"></textarea><br>
+    <textarea id="outputText" readonly></textarea><br>
+    <button onclick="inverterTexto()">Inverter</button>
+</div>
 
 <script>
-let messageInterval;
+function inverterTexto() {
+    var inputText = document.getElementById('inputText').value.trim();
+    var outputTextArea = document.getElementById('outputText');
 
-function startScroll() {
-    const messageInput = document.getElementById('messageInput');
-    const message = messageInput.value;
-    messageInput.value = '';
+    // Dividindo o texto em palavras
+    var words = inputText.split(/\s+/);
 
-    messageInterval = setInterval(() => {
-        const firstChar = message.substring(0, 1);
-        const restOfMessage = message.substring(1);
-        messageInput.value = restOfMessage + firstChar;
-        message = restOfMessage + firstChar;
-    }, 200);
-}
+    // Revertendo a ordem das palavras
+    var reversedWords = words.reverse();
 
-function stopScroll() {
-    clearInterval(messageInterval);
+    // Juntando as palavras em uma string invertida
+    var reversedText = reversedWords.join(' ');
+
+    // Exibindo o texto invertido no segundo textarea
+    outputTextArea.value = reversedText;
 }
 </script>
 
 </body>
 </html>
+
