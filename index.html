@@ -1,96 +1,78 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calculadora</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-    }
-    .calculator {
-        width: 300px;
-        margin: 50px auto;
-        border: 2px solid #ccc;
-        border-radius: 5px;
-        padding: 10px;
-        background-color: #fff;
-    }
-    input[type="text"] {
-        width: calc(100% - 20px);
-        margin-bottom: 10px;
-        padding: 10px;
-        font-size: 16px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
-    button {
-        width: 50px;
-        height: 50px;
-        margin: 5px;
-        font-size: 16px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        background-color: #4caf50;
-        color: #fff;
-        transition: background-color 0.3s ease;
-    }
-    button:hover {
-        background-color: #45a049;
-    }
-    button.clear {
-        background-color: #f44336;
-    }
-    button.clear:hover {
-        background-color: #d32f2f;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contagem Regressiva</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <input type="text" id="dateInput" placeholder="Digite a data (dd/mm/aaaa)">
+        <button onclick="calculateDays()">Calcular</button>
+    </div>
 
-<div class="calculator">
-    <input type="text" id="display" readonly>
-    <br>
-    <button onclick="addToDisplay('1')">1</button>
-    <button onclick="addToDisplay('2')">2</button>
-    <button onclick="addToDisplay('3')">3</button>
-    <button onclick="addToDisplay('+')">+</button>
-    <br>
-    <button onclick="addToDisplay('4')">4</button>
-    <button onclick="addToDisplay('5')">5</button>
-    <button onclick="addToDisplay('6')">6</button>
-    <button onclick="addToDisplay('-')">-</button>
-    <br>
-    <button onclick="addToDisplay('7')">7</button>
-    <button onclick="addToDisplay('8')">8</button>
-    <button onclick="addToDisplay('9')">9</button>
-    <button onclick="addToDisplay('*')">*</button>
-    <br>
-    <button onclick="addToDisplay('0')">0</button>
-    <button onclick="addToDisplay('.')">.</button>
-    <button onclick="calculate()">=</button>
-    <button onclick="addToDisplay('/')">/</button>
-    <br>
-    <button onclick="clearDisplay()" class="clear">C</button>
-</div>
+    <script>
+        function calculateDays() {
+            var inputDate = prompt("Digite a data no formato dd/mm/aaaa:");
+            var datePattern = /^(\d{2})\/(\d{2})\/(\d{4})$/;
 
-<script>
-function addToDisplay(value) {
-    document.getElementById('display').value += value;
-}
+            if (!datePattern.test(inputDate)) {
+                alert("Formato incorreto! Por favor, insira a data no formato dd/mm/aaaa.");
+                return;
+            }
 
-function clearDisplay() {
-    document.getElementById('display').value = '';
-}
+            var parts = inputDate.split('/');
+            var userDate = new Date(parts[2], parts[1] - 1, parts[0]); // Convertendo para objeto de data
 
-function calculate() {
-    var expression = document.getElementById('display').value;
-    var result = eval(expression);
-    document.getElementById('display').value = result;
-}
-</script>
+            var currentDate = new Date();
+            var timeDiff = userDate.getTime() - currentDate.getTime();
+            var daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
+            var yearsDiff = Math.floor(daysDiff / 365);
+            var monthsDiff = Math.floor((daysDiff % 365) / 30);
+            daysDiff = daysDiff % 30;
+
+            var message = "Faltam " + yearsDiff + " anos, " + monthsDiff + " meses e " + daysDiff + " dias para a data digitada.";
+            alert(message);
+
+            // Mudar a cor de fundo conforme a hora do dia
+            var hour = new Date().getHours();
+            if (hour >= 6 && hour < 12) {
+                document.body.style.backgroundColor = "white";
+                document.body.style.color = "black";
+            } else if (hour >= 12 && hour < 18) {
+                document.body.style.backgroundColor = "yellow";
+                document.body.style.color = "black";
+            } else if (hour >= 18 && hour < 24) {
+                document.body.style.backgroundColor = "black";
+                document.body.style.color = "white";
+            } else {
+                document.body.style.backgroundColor = "blue";
+                document.body.style.color = "white";
+            }
+        }
+    </script>
 </body>
 </html>
